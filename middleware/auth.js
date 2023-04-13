@@ -1,6 +1,6 @@
 const webToken = require("jsonwebtoken");
 
-function authorizationUser(req, res, next) {
+function auth(req, res, next) {
   const header = req.header("Authorization");
   const identification = header.split(" ")[1];
 
@@ -18,4 +18,4 @@ function authorizationUser(req, res, next) {
   );
 }
 
-module.exports = { authorizationUser };
+module.exports = { auth };
