@@ -5,7 +5,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const path = require("path");
 const userRoute = require("./routes/users.js");
-
+const sauceRoute = require("./routes/sauce.js");
 //variables d'environment
 const password = process.env.DB_PASSWORD;
 const username = process.env.DB_USER;
@@ -36,8 +36,8 @@ app.use((req, res, next) => {
 
 // function express
 app.use(express.json());
-app.use(cors());
+// app.use(cors());
 app.use("/images", express.static(path.join(__dirname, "image")));
 app.use("/api/auth", userRoute);
-
+app.use("/api/sauces", sauceRoute);
 module.exports = app;
