@@ -9,4 +9,7 @@ const upload = require("../middleware/upload");
 router.get("/", auth.auth, sauce.getSauces);
 router.post("/", auth.auth, upload, sauce.createSauce);
 router.get("/:id", auth.auth, sauce.getOneSauce);
+router.put("/:id", auth.auth, upload, sauce.modifySauce);
+router.delete("/:id", auth.auth, sauce.deleteSauce);
+
 module.exports = router;
