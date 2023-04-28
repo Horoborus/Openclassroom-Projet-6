@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const userRoute = require("./routes/users.js");
 const sauceRoute = require("./routes/sauce.js");
+
 //variables d'environment
 const password = process.env.DB_PASSWORD;
 const username = process.env.DB_USER;

@@ -53,7 +53,7 @@ exports.getOneSauce = (req, res, next) => {
 // Modifier Sauce
 exports.modifySauce = (req, res, next) => {
   const sauceBody = JSON.parse(req.body.sauce);
-  delete sauceBody._id;
+  const sauceId = req.params.id;
   const sauce = new Sauce({
     ...sauceBody,
     imageUrl: `${req.protocol}://${req.get("host")}/images/${
@@ -65,7 +65,7 @@ exports.modifySauce = (req, res, next) => {
     usersDisliked: [],
   });
 
-  Sauce.updateOne({ _id: req.params.id })
+  Sauce.updateOne({ _id: sauceId }, sauce)
     .then(() => {
       res.status(201).json({
         message: "Sauce modifiée avec succès!",
