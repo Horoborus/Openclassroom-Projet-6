@@ -121,7 +121,6 @@ exports.deleteSauce = (req, res, next) => {
     });
 };
 //Function Like Sauce
-//Function Like Sauce
 exports.likeSauce = (req, res, next) => {
   const { userId, like } = req.body;
   const sauceId = req.params.id;
@@ -132,7 +131,7 @@ exports.likeSauce = (req, res, next) => {
         return res.status(404).json({ message: "Sauce not found" });
       }
 
-      // Update the like status using the setLikeStatus function
+      // Mettre à jour le statut similaire à l'aide de la fonction setLikeStatus
       setLikeStatus(userId, like, sauce);
 
       sauce
@@ -149,7 +148,7 @@ exports.likeSauce = (req, res, next) => {
     });
 };
 
-// Function to set the like status for a user
+// / Fonction pour définir likes par utilisateur
 function setLikeStatus(userId, like, sauce) {
   const currentLike = sauce.usersLiked.includes(userId)
     ? 1
@@ -159,23 +158,29 @@ function setLikeStatus(userId, like, sauce) {
 
   if (like === 1) {
     if (currentLike !== 1) {
-      // Update the like status
+      // Mettre à jour les likes
       sauce.usersLiked.push(userId);
-      // Remove user from the dislike array if they had previously disliked the sauce
+      // Supprime l'utilisateur du tableau dislike s'il n'aimait pas la sauce auparavant
       const index = sauce.usersDisliked.indexOf(userId);
       if (index !== -1) {
         sauce.usersDisliked.splice(index, 1);
       }
       sauce.likes += 1;
+    } else {
+      const index = sauce.usersLiked.indexOf(userId);
+      if (index !== -1) {
+        sauce.usersLiked.splice(index, 1);
+        sauce.likes -= 1;
+      }
     }
   } else if (like === 0) {
     if (currentLike !== 0) {
-      // Remove user from the like array if they had previously liked the sauce
+      // Supprime l'utilisateur du tableau like s'il avait déjà aimé la sauce
       const index = sauce.usersLiked.indexOf(userId);
       if (index !== -1) {
         sauce.usersLiked.splice(index, 1);
       }
-      // Remove user from the dislike array if they had previously disliked the sauce
+      // Supprime l'utilisateur du tableau dislike s'il n'aimait pas la sauce auparavant
       const dislikeIndex = sauce.usersDisliked.indexOf(userId);
       if (dislikeIndex !== -1) {
         sauce.usersDisliked.splice(dislikeIndex, 1);
@@ -188,9 +193,9 @@ function setLikeStatus(userId, like, sauce) {
     }
   } else if (like === -1) {
     if (currentLike !== -1) {
-      // Update the like status
+      // Mettre à jour les likes
       sauce.usersDisliked.push(userId);
-      // Remove user from the like array if they had previously liked the sauce
+      // Supprime l'utilisateur du tableau like s'il avait déjà aimé la sauce
       const index = sauce.usersLiked.indexOf(userId);
       if (index !== -1) {
         sauce.usersLiked.splice(index, 1);

@@ -8,9 +8,15 @@ const webToken = require("jsonwebtoken");
 const { User } = require("../models/user");
 
 //Signup Utilisateur
-exports.signup = (req, res, next) => {
+exports.signup = async (req, res, next) => {
   const { email, password } = req.body;
   const hashedPassword = hashPassword(password);
+
+  // Check if the email already exists
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    return res.status(409).json({ message: "l'email existe déjà" });
+  }
 
   //Creation User data
   const userData = new User({ email, password: hashedPassword });
