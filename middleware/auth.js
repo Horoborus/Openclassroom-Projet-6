@@ -13,6 +13,9 @@ function auth(req, res, next) {
     (err, decoded) => {
       if (err) res.status(403).send({ message: "Token invalide" + err });
       console.log("Token est bien valide, on continue");
+      const userId = decoded.userId
+      req.auth= {userId: userId}
+
       next();
     }
   );

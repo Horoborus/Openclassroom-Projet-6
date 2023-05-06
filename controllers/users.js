@@ -44,12 +44,12 @@ exports.login = async (req, res, next) => {
     return res.status(403).send({ message: "Mot de passe incorrect" });
   }
 
-  const token = createToken(email);
+  const token = createToken(user._id);
   res.status(200).send({ userId: user._id, token: token });
 
-  function createToken(email) {
+  function createToken(userId) {
     const tokenPassword = process.env.TOKEN_PASSWORD;
-    return webToken.sign({ email: email }, tokenPassword, {
+    return webToken.sign({ userId: userId }, tokenPassword, {
       expiresIn: "24h",
     });
   }
