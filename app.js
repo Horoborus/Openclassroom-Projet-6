@@ -1,11 +1,14 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
-const cors = require("cors");
 const mongoose = require("mongoose");
 const path = require("path");
 const userRoute = require("./routes/users.js");
 const sauceRoute = require("./routes/sauce.js");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
+const mongoSanitize = require("express-mongo-sanitize");
+const xss = require("xss-clean");
 
 //variables d'environment
 const password = process.env.DB_PASSWORD;
@@ -19,6 +22,14 @@ mongoose
   .connect(mongo, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("Connexion à MongoDB réussie !"))
   .catch(() => console.log("Connexion à MongoDB échouée !"));
+
+// Configuration du rate limit
+const limiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 heure
+  max: 100, // 100 requêtes par heure
+  message:
+    "Trop de requêtes effectuées depuis cette adresse IP, veuillez réessayer plus tard.",
+});
 
 //config Header
 app.use((req, res, next) => {
@@ -37,7 +48,13 @@ app.use((req, res, next) => {
 
 // function express
 app.use(express.json());
-// app.use(cors());
+
+//Securité
+app.use(helmet());
+app.use(limiter);
+app.use(mongoSanitize());
+app.use(xss());
+
 app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/api/auth", userRoute);
 app.use("/api/sauces", sauceRoute);
