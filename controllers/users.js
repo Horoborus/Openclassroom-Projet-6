@@ -12,7 +12,7 @@ exports.signup = async (req, res, next) => {
   const { email, password } = req.body;
   const hashedPassword = hashPassword(password);
 
-  // Check if the email already exists
+  // Vérifiez si l'e-mail existe déjà
   const existingUser = await User.findOne({ email });
   if (existingUser) {
     return res.status(409).json({ message: "l'email existe déjà" });

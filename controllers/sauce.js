@@ -41,7 +41,7 @@ exports.createSauce = (req, res, next) => {
       });
     });
 };
-
+// Trouver une Sauce par le ID
 exports.getOneSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
