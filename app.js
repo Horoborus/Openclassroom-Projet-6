@@ -50,7 +50,17 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 //Securité
-app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      "default-src": ["'self'"],
+      "script-src": ["'self'"],
+      "style-src": ["'self'"],
+      "img-src": ["*"], // Autorise les images de toutes les sources
+      "font-src": ["'self'"],
+    },
+  })
+);
 app.use(limiter);
 app.use(mongoSanitize());
 app.use(xss());
